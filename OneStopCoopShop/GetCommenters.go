@@ -14,6 +14,7 @@ var listOfVideos []string
 var listOfCommenters []string
 
 const apiKey = ""
+const channelID = ""
 
 func main() {
 
@@ -50,7 +51,7 @@ func gitYouTubeVideos() {
 		}
 	}
 
-	url := "https://www.googleapis.com/youtube/v3/search?key=" + apiKey + "&channelId=UCrOtGhui_jdLdoQNI7PU4Pg&part=snippet,id&order=date"
+	url := "https://www.googleapis.com/youtube/v3/search?key=" + apiKey + "&channelId=" + channelID + "&part=snippet,id&order=date"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -75,7 +76,7 @@ func gitYouTubeVideos() {
 
 	for x := 2; x <= item.PageInfo.TotalResults/item.PageInfo.ResultsPerPage; x++ {
 		fmt.Println("Getting list of videos working on page:", x)
-		url := "https://www.googleapis.com/youtube/v3/search?key=" + apiKey + "&channelId=UCrOtGhui_jdLdoQNI7PU4Pg&part=snippet,id&order=date&pageToken=" + item.NextPageToken
+		url := "https://www.googleapis.com/youtube/v3/search?key=" + apiKey + "&channelId=" + channelID + "&part=snippet,id&order=date&pageToken=" + item.NextPageToken
 
 		req, _ := http.NewRequest("GET", url, nil)
 
