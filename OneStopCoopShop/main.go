@@ -10,16 +10,13 @@ import (
 	"os"
 )
 
-var listOfVideos []string
-var listOfCommenters []string
-
-const apiKey = ""
-const channelID = ""
+var apiKey = os.Getenv("YOUTUBE_API_KEY")
+var channelID = os.Getenv("YOUTUBE_OSCS_CHANNEL_ID")
 
 func main() {
 
-	gitYouTubeVideos()
-	gitYouTubeComments()
+	listOfVideos := getYouTubeVideos(apiKey, channelID)
+	listOfCommenters := getYouTubeCommenters(listOfVideos, apiKey)
 
 	fmt.Println("Writing list of commenters")
 	filename := "listOfCommenters.txt"
@@ -35,7 +32,7 @@ func main() {
 
 }
 
-func gitYouTubeVideos() {
+func getYouTubeVideos(apiKey string, channelID string) []string {
 
 	type ChannelVideos struct {
 		NextPageToken string `json:"nextPageToken"`
@@ -49,6 +46,7 @@ func gitYouTubeVideos() {
 			} `json:"id"`
 		}
 	}
+	var listOfVideos []string
 
 	url := "https://www.googleapis.com/youtube/v3/search?key=" + apiKey + "&channelId=" + channelID + "&part=snippet&order=date"
 
@@ -100,10 +98,10 @@ func gitYouTubeVideos() {
 			listOfVideos = append(listOfVideos, item.Items[y].ID.VideoID)
 		}
 	}
-
+	return listOfVideos
 }
 
-func gitYouTubeComments() {
+func getYouTubeCommenters(listOfVideos []string, apiKey string) []string {
 
 	type VideoCommenters struct {
 		NextPageToken string `json:"nextPageToken"`
@@ -124,6 +122,8 @@ func gitYouTubeComments() {
 			} `json:"replies"`
 		} `json:"items"`
 	}
+
+	var listOfCommenters []string
 
 	for x := 0; x < len(listOfVideos); x++ {
 		fmt.Println("Working on list of commenters, on #", x, " page 0, and video:", listOfVideos[x])
@@ -191,4 +191,5 @@ func gitYouTubeComments() {
 		}
 	}
 
+	return listOfCommenters
 }
