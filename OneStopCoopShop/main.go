@@ -50,7 +50,7 @@ func getYouTubeVideos(apiKey string, channelID string) []string {
 
 	url := "https://www.googleapis.com/youtube/v3/search?key=" + apiKey + "&channelId=" + channelID + "&part=snippet&order=date"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	req, _ := http.NewRequest(http.MethodGet, url, nil)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -76,7 +76,7 @@ func getYouTubeVideos(apiKey string, channelID string) []string {
 		x++
 		url := "https://www.googleapis.com/youtube/v3/search?key=" + apiKey + "&channelId=" + channelID + "&part=snippet,id&order=date&pageToken=" + item.NextPageToken
 
-		req, _ := http.NewRequest("GET", url, nil)
+		req, _ := http.NewRequest(http.MethodGet, url, nil)
 
 		res, _ := http.DefaultClient.Do(req)
 
@@ -130,7 +130,7 @@ func getYouTubeCommenters(listOfVideos []string, apiKey string) []string {
 
 		url := "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&key=" + apiKey + "&videoId=" + listOfVideos[x]
 
-		req, _ := http.NewRequest("GET", url, nil)
+		req, _ := http.NewRequest(http.MethodGet, url, nil)
 
 		res, _ := http.DefaultClient.Do(req)
 
@@ -162,7 +162,7 @@ func getYouTubeCommenters(listOfVideos []string, apiKey string) []string {
 			y++
 			url := "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&key=" + apiKey + "&videoId=" + listOfVideos[x] + "&pageToken=" + item.NextPageToken
 
-			req, _ := http.NewRequest("GET", url, nil)
+			req, _ := http.NewRequest(http.MethodGet, url, nil)
 
 			res, _ := http.DefaultClient.Do(req)
 
